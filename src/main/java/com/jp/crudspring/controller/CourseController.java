@@ -2,9 +2,7 @@ package com.jp.crudspring.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.jp.crudspring.model.Course;
 import com.jp.crudspring.service.CourseService;
@@ -23,8 +21,12 @@ public class CourseController {
 
 
     @GetMapping
-    public List<Course> list() {
+    public @ResponseBody List<Course> list() {
         return courseService.getCourses();
     }
 
+    @PostMapping
+    public @ResponseBody Course save(@RequestBody Course course) {
+        return courseService.saveCourse(course);
+    }
 }

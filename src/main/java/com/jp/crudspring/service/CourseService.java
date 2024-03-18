@@ -25,4 +25,9 @@ public class CourseService {
         return courseRepository.findAll();
     }
 
+    @Transactional
+    public Course saveCourse(Course course) {
+        return courseRepository.save(course);
+    }
+
 }
