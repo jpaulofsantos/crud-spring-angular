@@ -1,7 +1,9 @@
 package com.jp.crudspring.service;
 
 import java.util.List;
+import java.util.Optional;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import com.jp.crudspring.model.Course;
 import com.jp.crudspring.repository.CourseRepository;
@@ -30,4 +32,22 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
+    @Transactional
+    public Optional<Course> findByid(Long id) {
+        return courseRepository.findById(id);
+    }
+
+    @Transactional
+    public Course update(Long id, Course course) {
+        try {
+            Course courseNovo = courseRepository.getReferenceById(id);
+            courseNovo.setName(course.getName());
+            courseNovo.setCategory(course.getCategory());
+
+            return courseRepository.save(courseNovo);
+
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException(e.getMessage());
+        }
+    }
 }
