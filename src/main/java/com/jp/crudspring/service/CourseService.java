@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.Data;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import com.jp.crudspring.model.Course;
 import com.jp.crudspring.repository.CourseRepository;
@@ -48,6 +50,18 @@ public class CourseService {
 
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException(e.getMessage());
+        }
+    }
+
+    @Transactional()
+    public void delete(Long id) {
+        if(!courseRepository.existsById(id)) {
+            throw new EntityNotFoundException("Id não encontrado");
+        }
+        try {
+            courseRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException("Falha na integridade referencial");
         }
     }
 }
